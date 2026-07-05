@@ -1,0 +1,135 @@
+{
+  "Index": {
+    "meta_title": "Véritas - The perfect SaaS template to build and scale your business with ease.",
+    "meta_description": "Plataforma inteligente de apoio à decisão para qualquer área de negócio, built with React, TypeScript, Shadcn UI, and Tailwind CSS."
+  },
+  "Navbar": {
+    "sign_in": "Sign in",
+    "sign_up": "Sign up",
+    "product": "Product",
+    "pricing": "Pricing",
+    "docs": "Docs",
+    "blog": "Blog",
+    "about": "About"
+  },
+  "LocaleSwitcher": {
+    "button_label": "Change language"
+  },
+  "Hero": {
+    "follow_twitter": "Follow @Ixartz on Twitter",
+    "title": "Tome as melhores decisões com <important>inteligência</important> e clareza.",
+    "description": "Plataforma inteligente de apoio à decisão para qualquer área de negócio, built with React, TypeScript, Shadcn UI, and Tailwind CSS.",
+    "primary_button": "Get Next.js SaaS Starter Kit",
+    "secondary_button": "Star on GitHub"
+  },
+  "Features": {
+    "section_subtitle": "Features",
+    "section_title": "Unlock the Full Potential of the Véritas",
+    "section_description": "Plataforma inteligente de apoio à decisão para qualquer área de negócio, built with React, TypeScript, Shadcn UI, and Tailwind CSS.",
+    "feature1_title": "Node.js",
+    "feature2_title": "React",
+    "feature3_title": "Tailwind CSS",
+    "feature4_title": "TypeScript",
+    "feature5_title": "Shadcn UI",
+    "feature6_title": "ESLint",
+    "feature_description": "Plataforma inteligente de apoio à decisão para qualquer área de negócio, built with React, TypeScript, Shadcn UI, and Tailwind CSS."
+  },
+  "Pricing": {
+    "section_subtitle": "Pricing",
+    "section_title": "Unlock the Full Potential of the Véritas",
+    "section_description": "Plataforma inteligente de apoio à decisão para qualquer área de negócio, built with React, TypeScript, Shadcn UI, and Tailwind CSS.",
+    "button_text": "Get started"
+  },
+  "PricingPlans": {
+    "free_plan_name": "Free",
+    "premium_plan_name": "Premium",
+    "enterprise_plan_name": "Enterprise"
+  },
+  "PricingCard": {
+    "free_plan_description": "For individuals",
+    "premium_plan_description": "For small teams",
+    "enterprise_plan_description": "For industry leaders",
+    "plan_price": "${price}",
+    "plan_interval_month": "/ month",
+    "plan_interval_year": "/ year"
+  },
+  "PricingFeatures": {
+    "feature_team_member": "Up to {number} team members",
+    "feature_website": "Up to {number} websites",
+    "feature_storage": "{number} GB of storage",
+    "feature_transfer": "{number} TB of transfer",
+    "feature_email_support": "Email support"
+  },
+  "SponsorLogos": {
+    "sponsored_by": "Sponsored by",
+    "clerk_logo": "Clerk logo",
+    "sentry_logo": "Sentry logo",
+    "crowdin_logo": "Crowdin logo",
+    "arcjet_logo": "Arcjet logo",
+    "coderabbit_logo": "CodeRabbit logo",
+    "nextjs_boilerplate_logo": "Next.js SaaS Boilerplate logo"
+  },
+  "FAQ": {
+    "question1": "Does Véritas work for any business area?",
+    "answer1": "Yes. Véritas is designed to support decisions in any context — operational, strategic, financial, or product-related. The platform adapts to your scenario, not the other way around.",
+    "question2": "Do I need technical knowledge to use it?",
+    "answer2": "No. Véritas is built to be accessible to anyone, regardless of technical background. The interface is simple and the decision process is guided step by step.",
+    "question3": "Is my data safe on the platform?",
+    "answer3": "Yes. All information entered in Véritas is stored securely and never shared with third parties. You have full control over your data.",
+    "question4": "Can I use Véritas as a team?",
+    "answer4": "Yes. Véritas supports multiple users within the same organization, with access control and shared decision history.",
+    "question5": "Is Véritas in beta?",
+    "answer5": "Yes, we are in early stage. This means you can try the platform now, contribute feedback, and help shape the product from the start."
+  },
+  "CTA": {
+    "title": "You are ready?",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    "button_text": "Get Next.js SaaS Starter Kit"
+  },
+  "Footer": {
+    "product": "Product",
+    "docs": "Docs",
+    "blog": "Blog",
+    "community": "Community",
+    "company": "Company",
+    "terms_of_service": "Terms Of Service",
+    "privacy_policy": "Privacy Policy",
+    "footer_text": "© {year} {name}. Made with <author></author>."
+  },
+  "SignIn": {
+    "meta_title": "Sign in",
+    "meta_description": "Seamlessly sign in to your account with our user-friendly login process."
+  },
+  "SignUp": {
+    "meta_title": "Sign up",
+    "meta_description": "Effortlessly create an account through our intuitive sign-up process."
+  },
+  "DashboardLayout": {
+    "meta_title": "Véritas Dashboard",
+    "meta_description": "Plataforma inteligente de apoio à decisão para qualquer área de negócio, built with Next.js, TypeScript, Shadcn UI, and Tailwind CSS.",
+    "home": "Home",
+    "projects": "Projects",
+    "members": "Members",
+    "settings": "Settings"
+  },
+  "DashboardIndexPage": {
+    "title_bar": "Dashboard",
+    "title_bar_description": "Welcome to your dashboard",
+    "message_state_title": "Let's get started",
+    "message_state_description": "Customize this page by editing the file at <code>dashboard/page.tsx</code>.",
+    "message_state_alternative": "Need advanced features? Next.js 16 & React 19, Multi-tenancy & Teams, Roles & Permissions, Shadcn UI,\nEnd-to-End Typesafety with oRPC, Stripe Payment, Light / Dark mode. Try <url></url>.",
+    "max_message": "Or, need a Self-hosted auth stack (Better Auth)? Try <url></url>."
+  },
+  "UserProfilePage": {
+    "title_bar": "User Profile",
+    "title_bar_description": "View and manage your user profile"
+  },
+  "OrganizationProfilePage": {
+    "title_bar": "Organization Management",
+    "title_bar_description": "Manage your organization"
+  },
+  "ProjectsPage": {
+    "title_bar": "Projects",
+    "title_bar_description": "Manage your data projects and collaborate with your team"
+  }
+}

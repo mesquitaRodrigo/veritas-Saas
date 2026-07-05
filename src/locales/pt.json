@@ -1,0 +1,135 @@
+{
+  "Index": {
+    "meta_title": "Véritas - Decisões mais inteligentes para o seu negócio.",
+    "meta_description": "Plataforma de apoio à decisão com inteligência e clareza, para qualquer área de negócio."
+  },
+  "Navbar": {
+    "sign_in": "Entrar",
+    "sign_up": "Começar grátis",
+    "product": "Produto",
+    "pricing": "Planos",
+    "docs": "Documentação",
+    "blog": "Blog",
+    "about": "Sobre"
+  },
+  "LocaleSwitcher": {
+    "button_label": "Mudar idioma"
+  },
+  "Hero": {
+    "follow_twitter": "Siga o Véritas no Twitter",
+    "title": "Tome as melhores decisões com <important>inteligência</important> e clareza.",
+    "description": "O Véritas analisa contexto, dados e alternativas para guiar sua decisão — independente da área de negócio.",
+    "primary_button": "Começar agora",
+    "secondary_button": "Ver demonstração"
+  },
+  "Features": {
+    "section_subtitle": "Funcionalidades",
+    "section_title": "Tudo que você precisa para decidir melhor",
+    "section_description": "O Véritas reúne as ferramentas certas para transformar incerteza em clareza, em qualquer cenário.",
+    "feature1_title": "Análise de Contexto",
+    "feature2_title": "Comparação de Alternativas",
+    "feature3_title": "Dados em Tempo Real",
+    "feature4_title": "Relatórios Claros",
+    "feature5_title": "Colaboração em Equipe",
+    "feature6_title": "Histórico de Decisões",
+    "feature_description": "Recursos pensados para apoiar decisões complexas com simplicidade e confiança."
+  },
+  "Pricing": {
+    "section_subtitle": "Planos",
+    "section_title": "Escolha o plano ideal para você",
+    "section_description": "Comece gratuitamente e escale conforme sua necessidade. Sem surpresas.",
+    "button_text": "Começar agora"
+  },
+  "PricingPlans": {
+    "free_plan_name": "Gratuito",
+    "premium_plan_name": "Premium",
+    "enterprise_plan_name": "Enterprise"
+  },
+  "PricingCard": {
+    "free_plan_description": "Para começar",
+    "premium_plan_description": "Para times pequenos",
+    "enterprise_plan_description": "Para grandes operações",
+    "plan_price": "R$ {price}",
+    "plan_interval_month": "/ mês",
+    "plan_interval_year": "/ ano"
+  },
+  "PricingFeatures": {
+    "feature_team_member": "Até {number} membros",
+    "feature_website": "Até {number} projetos",
+    "feature_storage": "{number} GB de armazenamento",
+    "feature_transfer": "{number} TB de transferência",
+    "feature_email_support": "Suporte por e-mail"
+  },
+  "SponsorLogos": {
+    "sponsored_by": "Apoiado por",
+    "clerk_logo": "Logo Clerk",
+    "sentry_logo": "Logo Sentry",
+    "crowdin_logo": "Logo Crowdin",
+    "arcjet_logo": "Logo Arcjet",
+    "coderabbit_logo": "Logo CodeRabbit",
+    "nextjs_boilerplate_logo": "Logo Next.js SaaS Boilerplate"
+  },
+  "FAQ": {
+    "question1": "O Véritas funciona para qualquer área de negócio?",
+    "answer1": "Sim. O Véritas foi projetado para apoiar decisões em qualquer contexto — seja operacional, estratégico, financeiro ou de produto. A plataforma se adapta ao seu cenário, não ao contrário.",
+    "question2": "Preciso ter conhecimento técnico para usar?",
+    "answer2": "Não. O Véritas foi pensado para ser acessível a qualquer pessoa, independente de perfil técnico. A interface é simples e o processo de decisão é guiado passo a passo.",
+    "question3": "Meus dados ficam seguros na plataforma?",
+    "answer3": "Sim. Toda informação inserida no Véritas é armazenada com segurança e nunca compartilhada com terceiros. Você tem controle total sobre seus dados.",
+    "question4": "Posso usar o Véritas em equipe?",
+    "answer4": "Sim. O Véritas suporta múltiplos usuários dentro de uma mesma organização, com controle de acesso e histórico compartilhado de decisões.",
+    "question5": "O Véritas está em versão beta?",
+    "answer5": "Sim, estamos em fase inicial. Isso significa que você pode experimentar a plataforma agora, contribuir com feedback e ajudar a moldar o produto desde o começo."
+  },
+  "CTA": {
+    "title": "Pronto para decidir melhor?",
+    "description": "Comece gratuitamente hoje e veja como o Véritas transforma incerteza em clareza.",
+    "button_text": "Começar agora"
+  },
+  "Footer": {
+    "product": "Produto",
+    "docs": "Documentação",
+    "blog": "Blog",
+    "community": "Comunidade",
+    "company": "Empresa",
+    "terms_of_service": "Termos de Uso",
+    "privacy_policy": "Política de Privacidade",
+    "footer_text": "© {year} {name}. Todos os direitos reservados."
+  },
+  "SignIn": {
+    "meta_title": "Entrar",
+    "meta_description": "Acesse sua conta no Véritas e continue tomando decisões com inteligência."
+  },
+  "SignUp": {
+    "meta_title": "Criar conta",
+    "meta_description": "Crie sua conta no Véritas e comece a tomar decisões mais inteligentes hoje."
+  },
+  "DashboardLayout": {
+    "meta_title": "Painel Véritas",
+    "meta_description": "Seu painel de decisões inteligentes.",
+    "home": "Início",
+    "projects": "Projetos",
+    "members": "Membros",
+    "settings": "Configurações"
+  },
+  "DashboardIndexPage": {
+    "title_bar": "Painel",
+    "title_bar_description": "Bem-vindo ao seu painel de decisões",
+    "message_state_title": "Vamos começar",
+    "message_state_description": "Personalize esta página editando o arquivo em <code>dashboard/page.tsx</code>.",
+    "message_state_alternative": "Precisa de recursos avançados? Confira o plano Premium do Véritas: <url></url>.",
+    "max_message": "Ou prefere uma solução self-hosted? Entre em contato: <url></url>."
+  },
+  "UserProfilePage": {
+    "title_bar": "Perfil do Usuário",
+    "title_bar_description": "Visualize e gerencie seu perfil"
+  },
+  "OrganizationProfilePage": {
+    "title_bar": "Gestão da Organização",
+    "title_bar_description": "Gerencie sua organização"
+  },
+  "ProjectsPage": {
+    "title_bar": "Projetos",
+    "title_bar_description": "Gerencie seus projetos de dados e colabore com sua equipe"
+  }
+}
