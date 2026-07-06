@@ -165,7 +165,7 @@ export function ConnectionModal({ projectId, onClose, onCreated }: ConnectionMod
   const [selectedType, setSelectedType] = useState<ConnectionType | null>(null);
   const [name, setName] = useState('');
   const [config, setConfig] = useState<Record<string, string>>({});
-  const [testResult, setTestResult] = useState<{ ok: boolean; message: string } | null>(null);
+  const [testResult, setTestResult] = useState<{ ok: boolean; message: string; details?: string } | null>(null);
   const [error, setError] = useState('');
   const [isPending, startTransition] = useTransition();
   const [isTesting, setIsTesting] = useState(false);
@@ -289,7 +289,12 @@ export function ConnectionModal({ projectId, onClose, onCreated }: ConnectionMod
                         ? <><polyline points="20 6 9 17 4 12" /></>
                         : <><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></>}
                     </svg>
-                    {testResult.message}
+                    <div>
+                      <p>{testResult.message}</p>
+                      {testResult.details && (
+                        <p className="mt-0.5 text-xs opacity-75">{testResult.details}</p>
+                      )}
+                    </div>
                   </div>
                 )}
 

@@ -14,7 +14,7 @@ const postgresConfigSchema = z.object({
   database: z.string().min(1),
   username: z.string().min(1),
   password: z.string(),
-  ssl: z.boolean().default(false),
+  ssl: z.union([z.boolean(), z.string()]).transform(v => v === true || v === 'true').default(false),
 });
 
 const mysqlConfigSchema = z.object({
@@ -116,12 +116,62 @@ export async function createConnection(input: z.infer<typeof createConnectionSch
 export async function testConnection(
   type: string,
   config: Record<string, unknown>,
-): Promise<{ ok: boolean; message: string }> {
-  // Por enquanto valida só os campos — integração real com driver vem depois
+): Promise<{ ok: boolean; message: string; details?: string }> {
+  // Valida os campos primeiro
   try {
     validateConfig(type, config);
-    return { ok: true, message: 'Configuração válida. Conexão pronta para ser salva.' };
   } catch {
-    return { ok: false, message: 'Configuração inválida. Verifique os campos.' };
+    return { ok: false, message: 'Configuração inválida. Verifique os campos obrigatórios.' };
   }
+
+  // Teste real por tipo
+  if (type === 'postgresql') {
+    const cfg = postgresConfigSchema.parse(config);
+    const { Client } = await import('pg');
+    const client = new Client({
+      host: cfg.host,
+      port: cfg.port,
+      database: cfg.database,
+      user: cfg.username,
+      password: cfg.password,
+      ssl: cfg.ssl ? { rejectUnauthorized: false } : false,
+      connectionTimeoutMillis: 8000,
+    } as any);
+
+    try {
+      await client.connect();
+      const result = await client.query('SELECT version()');
+      const version = result.rows[0]?.version ?? '';
+      await client.end();
+      return {
+        ok: true,
+        message: 'Conexão estabelecida com sucesso!',
+        details: version.split(' ').slice(0, 2).join(' '),
+      };
+    } catch (err: any) {
+      try { await client.end(); } catch {}
+      const msg = err?.message ?? 'Erro desconhecido';
+
+      if (msg.includes('ECONNREFUSED')) {
+        return { ok: false, message: 'Conexão recusada. Verifique host e porta.' };
+      }
+      if (msg.includes('password authentication')) {
+        return { ok: false, message: 'Usuário ou senha incorretos.' };
+      }
+      if (msg.includes('does not exist')) {
+        return { ok: false, message: `Banco de dados "${cfg.database}" não encontrado.` };
+      }
+      if (msg.includes('timeout')) {
+        return { ok: false, message: 'Tempo esgotado. Verifique se o host está acessível.' };
+      }
+      return { ok: false, message: `Erro: ${msg}` };
+    }
+  }
+
+  if (type === 'csv') {
+    return { ok: true, message: 'Configuração de CSV válida. O arquivo será enviado ao criar um Dataset.' };
+  }
+
+  // MySQL, SQL Server, BigQuery — validação de campos por enquanto
+  return { ok: true, message: 'Configuração válida. Salve para continuar.' };
 }
