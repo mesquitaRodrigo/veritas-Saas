@@ -44,9 +44,12 @@ src/
 ├── components/ui/              # Componentes Shadcn
 ├── features/
 │   ├── connections/            # Conexões com fontes de dados
+│   ├── datasets/               # Datasets e importação de arquivos
 │   ├── projects/               # Projetos e ativos
 │   ├── dashboard/              # Layout do painel
-│   └── landing/                # Landing page
+│   ├── billing/                # Preços e planos
+│   ├── landing/                # Landing page
+│   └── sponsors/               # Logos de patrocinadores
 ├── libs/                       # DB, i18n, logger, env
 ├── models/Schema.ts            # Schema do banco (Drizzle)
 └── utils/                      # Configurações e helpers
