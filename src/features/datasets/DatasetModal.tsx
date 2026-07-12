@@ -4,6 +4,8 @@ import Papa from 'papaparse';
 import { useState, useTransition } from 'react';
 import * as XLSX from 'xlsx';
 import { createDataset, listConnectionTables } from '@/features/datasets/datasetActions';
+import { getQuerySuggestions } from '@/features/queries/queryActions';
+import { SqlEditor } from '@/features/queries/SqlEditor';
 
 type Connection = { id: string; name: string; type: string };
 type Table = { schema: string; name: string; type: string };
@@ -15,7 +17,7 @@ type DatasetModalProps = {
   onCreated: (dataset: any) => void;
 };
 
-type Origin = 'database' | 'file' | null;
+type Origin = 'database' | 'file' | 'query' | null;
 
 function StepIndicator({ steps, current }: { steps: string[]; current: number }) {
   return (
@@ -80,6 +82,12 @@ export function DatasetModal({ projectId, connections, onClose, onCreated }: Dat
   const [fileData, setFileData] = useState<{ headers: string[]; rows: any[]; fileName: string } | null>(null);
   const [fileError, setFileError] = useState('');
 
+  // Query flow
+  const [queryConnection, setQueryConnection] = useState<Connection | null>(null);
+  const [query, setQuery] = useState('');
+  const [queryTables, setQueryTables] = useState<string[]>([]);
+  const [loadingQueryTables, setLoadingQueryTables] = useState(false);
+
   // Common
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -103,6 +111,17 @@ export function DatasetModal({ projectId, connections, onClose, onCreated }: Dat
       setStep(2);
     } else {
       setTablesError(result.message ?? 'Erro ao listar tabelas');
+    }
+  };
+
+  const handleSelectQueryConnection = async (conn: Connection) => {
+    setQueryConnection(conn);
+    setLoadingQueryTables(true);
+    const result = await getQuerySuggestions(conn.id, projectId);
+    setLoadingQueryTables(false);
+    if (result.ok && result.tables) {
+      setQueryTables(result.tables);
+      setStep(2);
     }
   };
 
@@ -157,7 +176,7 @@ export function DatasetModal({ projectId, connections, onClose, onCreated }: Dat
 
     startTransition(async () => {
       try {
-        let originType: 'table' | 'view' | 'csv' | 'excel' = 'table';
+        let originType: 'table' | 'view' | 'csv' | 'excel' | 'sql_query' = 'table';
         let originRef: string | undefined;
         let connectionId: string | undefined;
 
@@ -168,6 +187,10 @@ export function DatasetModal({ projectId, connections, onClose, onCreated }: Dat
         } else if (origin === 'file' && fileData) {
           originType = fileData.fileName.endsWith('.csv') ? 'csv' : 'excel';
           originRef = fileData.fileName;
+        } else if (origin === 'query' && queryConnection) {
+          originType = 'sql_query';
+          originRef = query;
+          connectionId = queryConnection.id;
         }
 
         const dataset = await createDataset({
@@ -193,7 +216,8 @@ export function DatasetModal({ projectId, connections, onClose, onCreated }: Dat
 
   const dbSteps = ['Origem', 'Conexão', 'Tabela', 'Detalhes'];
   const fileSteps = ['Origem', 'Arquivo', 'Detalhes'];
-  const steps = origin === 'database' ? dbSteps : origin === 'file' ? fileSteps : ['Origem'];
+  const querySteps = ['Origem', 'Conexão', 'Query', 'Detalhes'];
+  const steps = origin === 'database' ? dbSteps : origin === 'file' ? fileSteps : origin === 'query' ? querySteps : ['Origem'];
 
   return (
     <div className="
@@ -313,6 +337,46 @@ export function DatasetModal({ projectId, connections, onClose, onCreated }: Dat
                 <div className="flex-1">
                   <p className="text-sm font-medium text-foreground">Arquivo</p>
                   <p className="text-xs text-muted-foreground">Suba um arquivo CSV ou Excel (.xlsx)</p>
+                </div>
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  className="
+                    text-muted-foreground transition-colors
+                    group-hover:text-primary
+                  "
+                >
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </button>
+
+              <button
+                onClick={() => handleSelectOrigin('query')}
+                className="
+                  group flex items-center gap-4 rounded-lg border border-border
+                  bg-background p-4 text-left transition-all
+                  hover:border-primary/50 hover:bg-primary/5
+                "
+              >
+                <div className="
+                  flex size-10 shrink-0 items-center justify-center rounded-lg
+                  bg-primary/10 text-primary transition-colors
+                  group-hover:bg-primary/20
+                "
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <polyline points="4 7 4 4 20 4 20 7" />
+                    <line x1="9" y1="20" x2="15" y2="20" />
+                    <line x1="12" y1="4" x2="12" y2="20" />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-foreground">Query SQL</p>
+                  <p className="text-xs text-muted-foreground">Escreva uma query SQL personalizada</p>
                 </div>
                 <svg
                   width="14"
@@ -589,8 +653,94 @@ export function DatasetModal({ projectId, connections, onClose, onCreated }: Dat
             </div>
           )}
 
+          {/* STEP 1 QUERY: Selecionar conexão */}
+          {origin === 'query' && step === 1 && (
+            <div className="grid gap-2">
+              {connections.length === 0
+                ? <p className="py-8 text-center text-sm text-muted-foreground">Nenhuma conexão disponível. Crie uma conexão primeiro.</p>
+                : connections.map(conn => (
+                    <button
+                      key={conn.id}
+                      onClick={() => handleSelectQueryConnection(conn)}
+                      disabled={loadingQueryTables}
+                      className="
+                        flex items-center gap-3 rounded-lg border border-border
+                        bg-background p-3 text-left transition-all
+                        hover:border-primary/50
+                        disabled:opacity-60
+                      "
+                    >
+                      <div className="
+                        flex size-8 items-center justify-center rounded-sm
+                        bg-primary/10 text-primary
+                      "
+                      >
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                          <ellipse cx="12" cy="5" rx="9" ry="3" />
+                          <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+                          <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-foreground">{conn.name}</p>
+                        <p className="text-xs text-muted-foreground capitalize">{conn.type}</p>
+                      </div>
+                      {loadingQueryTables && queryConnection?.id === conn.id && (
+                        <div className="
+                          ml-auto size-4 animate-spin rounded-full border-2
+                          border-primary border-t-transparent
+                        "
+                        />
+                      )}
+                    </button>
+                  ))}
+            </div>
+          )}
+
+          {/* STEP 2 QUERY: SQL Editor */}
+          {origin === 'query' && step === 2 && (
+            <div className="space-y-4">
+              <div>
+                <label className="
+                  mb-2 block text-sm font-medium text-foreground
+                "
+                >
+                  Query SQL
+                  <span className="text-destructive">
+                    *
+                  </span>
+                </label>
+                <SqlEditor
+                  value={query}
+                  onChange={setQuery}
+                  tables={queryTables}
+                  placeholder="SELECT * FROM schema.table_name WHERE..."
+                  minHeight="250px"
+                  maxHeight="400px"
+                />
+              </div>
+              <button
+                onClick={() => {
+                  if (query.trim()) {
+                    setName(`Query SQL ${new Date().toLocaleDateString()}`);
+                    setStep(3);
+                  }
+                }}
+                disabled={!query.trim()}
+                className="
+                  w-full rounded-md bg-primary px-4 py-2 text-sm font-medium
+                  text-primary-foreground transition-colors
+                  hover:bg-primary/90
+                  disabled:opacity-60
+                "
+              >
+                Continuar
+              </button>
+            </div>
+          )}
+
           {/* STEP FINAL: Detalhes */}
-          {((origin === 'database' && step === 3) || (origin === 'file' && step === 2 && fileData)) && (
+          {((origin === 'database' && step === 3) || (origin === 'file' && step === 2 && fileData) || (origin === 'query' && step === 3)) && (
             <div className="mt-4 space-y-4">
               <div className="border-t border-border pt-4">
                 <p className="
@@ -681,7 +831,7 @@ export function DatasetModal({ projectId, connections, onClose, onCreated }: Dat
             >
               ← Voltar
             </button>
-            {((origin === 'database' && step === 3) || (origin === 'file' && step === 2 && fileData)) && (
+            {((origin === 'database' && step === 3) || (origin === 'file' && step === 2 && fileData) || (origin === 'query' && step === 3)) && (
               <button
                 onClick={handleCreate}
                 disabled={isPending}

@@ -2,7 +2,9 @@ import { auth } from '@clerk/nextjs/server';
 import { and, eq } from 'drizzle-orm';
 import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
+import { ProjectDetailClient } from '@/features/projects/ProjectDetailClient';
 import { db } from '@/libs/DB';
+import { logger } from '@/libs/Logger';
 import {
   connectionSchema,
   dashboardSchema,
@@ -11,7 +13,6 @@ import {
   projectSchema,
   sqlQuerySchema,
 } from '@/models/Schema';
-import { ProjectDetailClient } from '@/features/projects/ProjectDetailClient';
 
 export default async function ProjectDetailPage(props: {
   params: Promise<{ locale: string; id: string }>;
@@ -20,7 +21,10 @@ export default async function ProjectDetailPage(props: {
   setRequestLocale(locale);
 
   const { userId, orgId } = await auth();
-  if (!userId || !orgId) return null;
+  logger.info`[ProjectDetail] userId: ${userId} orgId: ${orgId} projectId: ${id}`;
+  if (!userId || !orgId) {
+    return null;
+  }
 
   // Verifica se o usuário tem acesso ao projeto
   const [membership] = await db
@@ -36,7 +40,12 @@ export default async function ProjectDetailPage(props: {
     )
     .limit(1);
 
-  if (!membership) notFound();
+  logger.info('[ProjectDetail] membership:', membership);
+
+  if (!membership) {
+    logger.warn`[ProjectDetail] No membership found for project: ${id}`;
+    notFound();
+  }
 
   // Busca o projeto
   const [project] = await db
@@ -45,7 +54,12 @@ export default async function ProjectDetailPage(props: {
     .where(eq(projectSchema.id, id))
     .limit(1);
 
-  if (!project) notFound();
+  logger.info('[ProjectDetail] project:', project);
+
+  if (!project) {
+    logger.warn`[ProjectDetail] No project found with id: ${id}`;
+    notFound();
+  }
 
   // Busca os ativos do projeto em paralelo
   const [connections, datasets, queries, dashboards] = await Promise.all([
@@ -59,7 +73,7 @@ export default async function ProjectDetailPage(props: {
     <ProjectDetailClient
       project={project}
       role={membership.role}
-        connections={connections}
+      connections={connections}
       datasets={datasets}
       queries={queries}
       dashboards={dashboards}

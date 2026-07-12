@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { ConnectionModal } from '@/features/connections/ConnectionModal';
 import { DatasetModal } from '@/features/datasets/DatasetModal';
+import { SqlQueryPage } from '@/features/sql-queries/SqlQueryPage';
 
 type Project = {
   id: string;
@@ -113,6 +114,7 @@ export function ProjectDetailClient({
   const [activeTab, setActiveTab] = useState<Tab>('overview');
   const [showConnectionModal, setShowConnectionModal] = useState(false);
   const [showDatasetModal, setShowDatasetModal] = useState(false);
+  const [sqlQueries, setSqlQueries] = useState<Query[]>(queries ?? []);
   const [datasets, setDatasets] = useState<Dataset[]>(initialDatasets ?? []);
   const [connections, setConnections] = useState<Connection[]>(initialConnections);
 
@@ -524,69 +526,15 @@ export function ProjectDetailClient({
 
       {/* CONSULTAS SQL */}
       {activeTab === 'queries' && (
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <p className="text-sm text-muted-foreground">
-              {queries.length}
-              {' '}
-              consulta(s)
-            </p>
-            <button className="
-              flex items-center gap-2 rounded-md bg-primary px-3 py-1.5 text-xs
-              font-medium text-primary-foreground transition-colors
-              hover:bg-primary/90
-            "
-            >
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <line x1="12" y1="5" x2="12" y2="19" />
-                <line x1="5" y1="12" x2="19" y2="12" />
-              </svg>
-              Nova consulta
-            </button>
-          </div>
-          {queries.length === 0
-            ? (
-                <EmptyState
-                  icon={(
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                      <polyline points="16 18 22 12 16 6" />
-                      <polyline points="8 6 2 12 8 18" />
-                    </svg>
-                  )}
-                  title="Nenhuma consulta ainda"
-                  description="Escreva uma query SQL para transformar seus dados."
-                />
-              )
-            : (
-                <div className="flex flex-col gap-2">
-                  {queries.map(q => (
-                    <div
-                      key={q.id}
-                      className="
-                        cursor-pointer rounded-xl border border-border bg-card
-                        p-4 transition-colors
-                        hover:border-primary/40
-                      "
-                    >
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="font-medium text-foreground">{q.name}</p>
-                          {q.description && (
-                            <p className="mt-0.5 text-xs text-muted-foreground">
-                              {q.description}
-                            </p>
-                          )}
-                        </div>
-                        <p className="text-xs text-muted-foreground">{formatDate(q.createdAt)}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-        </div>
+        <SqlQueryPage
+          projectId={project.id}
+          connections={connections}
+          initialQueries={sqlQueries}
+          onCreated={(q: any) => setSqlQueries((prev: any[]) => [q, ...prev])}
+        />
       )}
 
-      {/* DASHBOARDS */}
+            {/* DASHBOARDS */}
       {activeTab === 'dashboards' && (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
